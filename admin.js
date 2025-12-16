@@ -1,70 +1,46 @@
-import { auth, db } from "./firebase.js";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, orderBy, query } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { app } from "./firebase.js";
 
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const db = getFirestore(app);
+const lista = document.getElementById("lista");
 
-// LOGIN
-const loginForm = document.getElementById("loginForm");
+let dadosExportacao = [];
 
-if (loginForm) {
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+async function carregarMensagens() {
+  lista.innerHTML = "";
+  dadosExportacao = [];
 
-    signInWithEmailAndPassword(
-      auth,
-      email.value,
-      senha.value
-    ).then(() => {
-      window.location.href = "admin.html";
-    }).catch(err => alert(err.message));
-  });
-}
+  const q = query(collection(db, "manifestacoes"), orderBy("data", "desc"));
+  const snapshot = await getDocs(q);
 
-// PROTEÇÃO + LISTAGEM
-onAuthStateChanged(auth, async (user) => {
-  const lista = document.getElementById("lista");
+  snapshot.forEach(doc => {
+    const d = doc.data();
 
-  if (!user && lista) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  if (user && lista) {
-    const q = query(
-      collection(db, "manifestacoes"),
-      orderBy("data", "desc")
-    );
-
-    const snap = await getDocs(q);
-
-    lista.innerHTML = "";
-
-    snap.forEach(doc => {
-      const d = doc.data();
-      lista.innerHTML += `
-        <p><strong>${d.nome}</strong><br>${d.mensagem}</p>
+    lista.innerHTML += `
+      <div class="card">
+        <p><strong>Nome:</strong> ${d.nome}</p>
+        <p><strong>Telefone:</strong> ${d.telefone}</p>
+        <p><strong>O que mais gosta:</strong> ${d.gosta}</p>
+        <p><strong>Mensagem:</strong> ${d.mensagem}</p>
         <hr>
-      `;
-    });
-  }
-});
+      </div>
+    `;
 
-// LOGOUT
-const logoutBtn = document.getElementById("logout");
-
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "login.html";
+    dadosExportacao.push({
+      Nome: d.nome,
+      Telefone: d.telefone,
+      "O que mais gosta": d.gosta,
+      Mensagem: d.mensagem
     });
   });
 }
+
+window.exportarXLSX = function () {
+  const ws = XLSX.utils.json_to_sheet(dadosExportacao);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
+  XLSX.writeFile(wb, "ouvidoria.xlsx");
+};
+
+carregarMensagens();

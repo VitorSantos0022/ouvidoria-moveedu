@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Painel Administrativo</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Biblioteca XLSX -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
 <header>
-  <h1>Painel da Ouvidoria</h1>
+  <h1>Painel Administrativo</h1>
 </header>
 
 <div class="card">
+  <button onclick="exportarXLSX()">Exportar XLSX</button>
   <div id="lista"></div>
-  <button id="logout">Sair</button>
 </div>
 
-<script type="module" src="./firebase.js"></script>
-<script type="module" src="./admin.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
 </body>
 </html>
