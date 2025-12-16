@@ -1,6 +1,22 @@
-<h1>Painel Administrativo</h1>
-<button id="logout">Sair</button>
-<link rel="stylesheet" href="./style.css">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Administrativo</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="script.js"></script>
+<header>
+  <h1>Painel da Ouvidoria</h1>
+</header>
+
+<div class="card">
+  <div id="lista"></div>
+  <button id="logout">Sair</button>
+</div>
+
+<script type="module" src="./firebase.js"></script>
+<script type="module" src="./admin.js"></script>
+</body>
+</html>

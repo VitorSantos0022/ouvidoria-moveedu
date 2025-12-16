@@ -1,5 +1,5 @@
 body {
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   background: #0056A6;
   margin: 0;
 }
@@ -10,16 +10,21 @@ header {
   text-align: center;
 }
 
-.logo {
-  max-width: 220px;
+header h1 {
+  margin: 0;
+  color: #000;
 }
 
 .card {
-  background: #fff;
+  background: #ffffff;
   max-width: 500px;
   margin: 30px auto;
   padding: 20px;
   border-radius: 10px;
+}
+
+p {
+  color: #333;
 }
 
 input,
@@ -30,6 +35,11 @@ textarea {
   box-sizing: border-box;
 }
 
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
 button {
   background: #0056A6;
   color: #fff;
@@ -37,16 +47,24 @@ button {
   border: none;
   width: 100%;
   cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #0056A6;
+  text-decoration: none;
 }
 
 footer {
   background: #333;
   color: #fff;
   text-align: center;
-  padding: 20px;
-}
-
-.logo-footer {
-  max-width: 140px;
-  margin-bottom: 10px;
+  padding: 15px;
+  margin-top: 40px;
 }

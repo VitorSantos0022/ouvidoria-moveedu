@@ -1,7 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <meta http-equiv="refresh" content="0; url=formulario.html">
+  <meta charset="UTF-8">
+  <title>Ouvidoria MoveEdu</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
-<body></body>
+<body>
+
+<header>
+  <h1>Ouvidoria MoveEdu</h1>
+</header>
+
+<div class="card">
+  <p>Envie sua manifestação</p>
+
+  <form id="ouvidoriaForm">
+    <input type="text" id="nome" placeholder="Seu nome (opcional)">
+    <textarea id="mensagem" placeholder="Digite sua mensagem" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <a href="login.html">Acesso administrativo</a>
+</div>
+
+<footer>
+  MoveEdu © 2025
+</footer>
+
+<script type="module" src="./firebase.js"></script>
+<script type="module" src="./form.js"></script>
+</body>
 </html>
