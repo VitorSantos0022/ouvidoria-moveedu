@@ -5,7 +5,6 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Identifica página atual
 const path = window.location.pathname;
 
 // LOGIN
@@ -23,28 +22,17 @@ if (form) {
         window.location.href = "admin.html";
       })
       .catch((error) => {
-        alert("Erro ao entrar: " + error.message);
+        alert("Erro: " + error.message);
       });
   });
 }
 
-// CONTROLE DE ACESSO (GITHUB PAGES SAFE)
+// PROTEÇÃO DO ADMIN
 onAuthStateChanged(auth, (user) => {
-
-  const isIndex =
-    path.endsWith("/") ||
-    path.endsWith("/index.html");
-
   const isAdmin = path.endsWith("/admin.html");
 
-  // Logado + index → admin
-  if (user && isIndex) {
-    window.location.href = "admin.html";
-  }
-
-  // Não logado + admin → index
   if (!user && isAdmin) {
-    window.location.href = "index.html";
+    window.location.href = "login.html";
   }
 });
 
@@ -54,7 +42,7 @@ const logoutBtn = document.getElementById("logout");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     signOut(auth).then(() => {
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     });
   });
 }

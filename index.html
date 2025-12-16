@@ -2,19 +2,21 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Ouvidoria MoveEdu - Login</title>
+  <title>Ouvidoria MoveEdu</title>
 </head>
 <body>
 
-  <h2>Login Administrativo</h2>
+  <h1>Ouvidoria MoveEdu</h1>
+  <p>Envie sua manifestação</p>
 
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="senha" placeholder="Senha" required><br><br>
-    <button type="submit">Entrar</button>
+  <form>
+    <input type="text" placeholder="Seu nome (opcional)"><br><br>
+    <textarea placeholder="Digite sua mensagem" required></textarea><br><br>
+    <button type="submit">Enviar</button>
   </form>
 
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="script.js"></script>
+  <br>
+  <a href="login.html">Acesso administrativo</a>
+
 </body>
 </html>
