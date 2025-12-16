@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, getDocs, orderBy, query } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 Configuração Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
   authDomain: "ouvidoria--moveedu.firebaseapp.com",
