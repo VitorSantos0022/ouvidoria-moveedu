@@ -1,42 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>OUVIDORIA MOVEEDU</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Ouvidoria MoveEdu - Login</title>
 </head>
 <body>
-<header>
-<img src="assets/logo-microlins.png" class="logo">
-<h1>OUVIDORIA MOVEEDU</h1>
-</header>
 
+  <h2>Login Administrativo</h2>
 
-<main class="card">
-<input id="nome" placeholder="Nome do aluno">
-<input id="telefone" placeholder="Telefone para contato">
-<textarea id="mensagem" placeholder="O que você deseja reportar?"></textarea>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="senha" placeholder="Senha" required><br><br>
+    <button type="submit">Entrar</button>
+  </form>
 
-
-<h3>O que você mais gosta na escola?</h3>
-<label><input type="checkbox" value="Professores"> Professores</label>
-<label><input type="checkbox" value="Estrutura"> Estrutura</label>
-<label><input type="checkbox" value="Metodologia"> Metodologia</label>
-<label><input type="checkbox" value="Atendimento"> Atendimento</label>
-
-
-<button onclick="enviar()">Enviar</button>
-</main>
-
-
-<footer>
-<img src="assets/logo-faculdade.png" class="logo-footer">
-<p>OUVIDORIA MOVEEDU • Microlins Bragança • Profissionalizando o País<br>
-Canal institucional para escuta, melhoria contínua e fortalecimento da comunidade escolar.</p>
-</footer>
-
-
-<script src="firebase.js"></script>
-<script src="script.js"></script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

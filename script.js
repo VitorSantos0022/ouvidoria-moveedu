@@ -1,10 +1,29 @@
-function enviar(){
-const nome = nome.value;
-const telefone = telefone.value;
-const mensagem = mensagem.value;
-const gostos = [...document.querySelectorAll('input[type=checkbox]:checked')].map(e=>e.value);
+import { auth } from "./firebase.js";
+import { signInWithEmailAndPassword, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+const form = document.getElementById("loginForm");
 
-db.collection('ouvidoria').add({nome, telefone, mensagem, gostos, data:new Date()})
-.then(()=>alert('Enviado com sucesso!'));
+if (form) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    signInWithEmailAndPassword(auth, email, senha)
+      .then(() => {
+        window.location.href = "admin.html";
+      })
+      .catch((error) => {
+        alert("Erro ao entrar: " + error.message);
+      });
+  });
 }
+
+// Proteção do admin
+onAuthStateChanged(auth, (user) => {
+  if (window.location.pathname.includes("admin.html") && !user) {
+    window.location.href = "index.html";
+  }
+});
