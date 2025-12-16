@@ -1,12 +1,42 @@
-<form id="formOuvidoria">
-  <input type="text" id="nome" placeholder="Seu nome (opcional)">
-  <input type="tel" id="telefone" placeholder="Telefone / WhatsApp (opcional)">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Ouvidoria MOVEEDU</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  <label><strong>O que você mais gosta na escola?</strong></label>
-  <textarea id="gosta" placeholder="Conte pra gente (opcional)"></textarea>
+<header>
+  <img src="logo.png" class="logo" alt="MOVEEDU">
+</header>
 
-  <label><strong>Sua mensagem</strong></label>
-  <textarea id="mensagem" placeholder="Digite sua mensagem" required></textarea>
+<div class="card">
+  <h2>Ouvidoria MOVEEDU</h2>
 
-  <button type="submit">Enviar</button>
-</form>
+  <form id="formOuvidoria">
+    <input type="text" id="nome" placeholder="Seu nome (opcional)">
+    <input type="tel" id="telefone" placeholder="Telefone / WhatsApp (opcional)">
+
+    <label class="label">Relate aqui, queremos te ouvir:</label>
+    <textarea id="mensagem" required></textarea>
+
+    <label class="label">O que você mais gosta na escola?</label>
+    <textarea id="gosta"></textarea>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <p id="status"></p>
+
+  <a href="login.html">Acesso administrativo</a>
+</div>
+
+<footer>
+  <img src="logo.png" class="logo-footer">
+  <p>© MOVEEDU</p>
+</footer>
+
+<script type="module" src="form.js"></script>
+</body>
+</html>

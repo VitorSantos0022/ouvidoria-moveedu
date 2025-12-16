@@ -3,23 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Login Admin</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Acesso Administrativo</h1>
-</header>
-
 <div class="card">
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="senha" placeholder="Senha" required>
-    <button type="submit">Entrar</button>
-  </form>
+  <h2>Login Administrativo</h2>
+
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="senha" placeholder="Senha">
+  <button id="btnLogin">Entrar</button>
+
+  <p id="status"></p>
 </div>
 
-<script type="module" src="./firebase.js"></script>
-<script type="module" src="./admin.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
+  authDomain: "ouvidoria--moveedu.firebaseapp.com",
+  projectId: "ouvidoria--moveedu"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("btnLogin").onclick = () => {
+  signInWithEmailAndPassword(
+    auth,
+    email.value,
+    senha.value
+  ).then(() => {
+    window.location.href = "admin.html";
+  }).catch(() => {
+    status.innerText = "Login inválido";
+  });
+};
+</script>
 </body>
 </html>
