@@ -4,6 +4,7 @@ import { app } from "./firebase.js";
 
 const db = getFirestore(app);
 const lista = document.getElementById("lista");
+const btnExportar = document.getElementById("btnExportar");
 
 let dadosExportacao = [];
 
@@ -30,17 +31,22 @@ async function carregarMensagens() {
     dadosExportacao.push({
       Nome: d.nome,
       Telefone: d.telefone,
-      "O que mais gosta": d.gosta,
+      "O que mais gosta na escola": d.gosta,
       Mensagem: d.mensagem
     });
   });
 }
 
-window.exportarXLSX = function () {
+btnExportar.addEventListener("click", () => {
+  if (dadosExportacao.length === 0) {
+    alert("Não há dados para exportar.");
+    return;
+  }
+
   const ws = XLSX.utils.json_to_sheet(dadosExportacao);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
   XLSX.writeFile(wb, "ouvidoria.xlsx");
-};
+});
 
 carregarMensagens();
