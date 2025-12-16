@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Painel Administrativo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<img src="assets/logo-faculdade.png" class="logo">
+<h1>Painel Administrativo</h1>
+</header>
+
+
+<main class="card">
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+
+
+<hr>
+
+
+<input id="filtro" placeholder="Pesquisar">
+<button onclick="exportar()">Baixar XLSX</button>
+
+
+<div id="lista"></div>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="firebase.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
