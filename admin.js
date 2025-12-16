@@ -1,16 +1,38 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, orderBy, query } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { app } from "./firebase.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
+  authDomain: "ouvidoria--moveedu.firebaseapp.com",
+  projectId: "ouvidoria--moveedu"
+};
+
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const lista = document.getElementById("lista");
-const btnExportar = document.getElementById("btnExportar");
 
 let dadosExportacao = [];
 
-async function carregarMensagens() {
-  lista.innerHTML = "";
-  dadosExportacao = [];
+document.addEventListener("DOMContentLoaded", async () => {
+  const lista = document.getElementById("lista");
+  const btnExportar = document.getElementById("btnExportar");
+
+  if (!btnExportar) {
+    console.error("Botão Exportar não encontrado");
+    return;
+  }
+
+  btnExportar.addEventListener("click", () => {
+    if (dadosExportacao.length === 0) {
+      alert("Não há dados para exportar.");
+      return;
+    }
+
+    const ws = XLSX.utils.json_to_sheet(dadosExportacao);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
+    XLSX.writeFile(wb, "ouvidoria.xlsx");
+  });
 
   const q = query(collection(db, "manifestacoes"), orderBy("data", "desc"));
   const snapshot = await getDocs(q);
@@ -35,18 +57,4 @@ async function carregarMensagens() {
       Mensagem: d.mensagem
     });
   });
-}
-
-btnExportar.addEventListener("click", () => {
-  if (dadosExportacao.length === 0) {
-    alert("Não há dados para exportar.");
-    return;
-  }
-
-  const ws = XLSX.utils.json_to_sheet(dadosExportacao);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
-  XLSX.writeFile(wb, "ouvidoria.xlsx");
 });
-
-carregarMensagens();
