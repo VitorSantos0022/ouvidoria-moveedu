@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, getDocs, orderBy, query } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// 🔥 Configuração Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
   authDomain: "ouvidoria--moveedu.firebaseapp.com",
@@ -16,11 +17,6 @@ let dadosExportacao = [];
 document.addEventListener("DOMContentLoaded", async () => {
   const lista = document.getElementById("lista");
   const btnExportar = document.getElementById("btnExportar");
-
-  if (!btnExportar) {
-    console.error("Botão Exportar não encontrado");
-    return;
-  }
 
   btnExportar.addEventListener("click", () => {
     if (dadosExportacao.length === 0) {
