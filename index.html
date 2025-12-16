@@ -2,32 +2,40 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Ouvidoria MoveEdu</title>
-  <link rel="stylesheet" href="./style.css">
+  <title>Ouvidoria MOVEEDU</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <h1>Ouvidoria MoveEdu</h1>
+  <img src="logo.png" class="logo" alt="MOVEEDU">
 </header>
 
 <div class="card">
-  <p>Envie sua manifestação</p>
+  <h2>Ouvidoria MOVEEDU</h2>
 
-  <form id="ouvidoriaForm">
+  <form id="formOuvidoria">
     <input type="text" id="nome" placeholder="Seu nome (opcional)">
+
+    <input type="tel" id="telefone" placeholder="Telefone / WhatsApp (opcional)">
+
     <textarea id="mensagem" placeholder="Digite sua mensagem" required></textarea>
+
     <button type="submit">Enviar</button>
   </form>
+
+  <p id="status"></p>
 
   <a href="login.html">Acesso administrativo</a>
 </div>
 
 <footer>
-  MoveEdu © 2025
+  <img src="logo.png" class="logo-footer">
+  <p>© MOVEEDU</p>
 </footer>
 
-<script type="module" src="./firebase.js"></script>
-<script type="module" src="./form.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="form.js"></script>
+
 </body>
 </html>
