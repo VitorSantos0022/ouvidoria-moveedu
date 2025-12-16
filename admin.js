@@ -1,6 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, orderBy, query } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    alert("Acesso negado. Faça login.");
+    window.location.href = "login.html";
+  }
+});
 
 const firebaseConfig = {
   apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
