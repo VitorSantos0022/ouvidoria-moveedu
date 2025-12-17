@@ -1,18 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, orderBy, query } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  orderBy,
+  query
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const auth = getAuth(app);
-
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    alert("Acesso negado. Faça login.");
-    window.location.href = "login.html";
-  }
-});
-
+// 🔥 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
   authDomain: "ouvidoria--moveedu.firebaseapp.com",
@@ -21,46 +20,70 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-let dadosExportacao = [];
+// 📦 array GLOBAL para exportação
+let dadosXLSX = [];
 
-document.addEventListener("DOMContentLoaded", async () => {
+// 🔒 proteger painel
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    alert("Faça login para acessar o painel.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  await carregarDados();
+});
+
+async function carregarDados() {
   const lista = document.getElementById("lista");
-  const btnExportar = document.getElementById("btnExportar");
+  lista.innerHTML = "<p>Carregando...</p>";
+  dadosXLSX = [];
 
-  btnExportar.addEventListener("click", () => {
-    if (dadosExportacao.length === 0) {
-      alert("Não há dados para exportar.");
-      return;
-    }
+  const q = query(
+    collection(db, "manifestacoes"),
+    orderBy("data", "desc")
+  );
 
-    const ws = XLSX.utils.json_to_sheet(dadosExportacao);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
-    XLSX.writeFile(wb, "ouvidoria.xlsx");
-  });
-
-  const q = query(collection(db, "manifestacoes"), orderBy("data", "desc"));
   const snapshot = await getDocs(q);
+
+  lista.innerHTML = "";
 
   snapshot.forEach(doc => {
     const d = doc.data();
 
     lista.innerHTML += `
       <div class="card">
-        <p><strong>Nome:</strong> ${d.nome}</p>
-        <p><strong>Telefone:</strong> ${d.telefone}</p>
-        <p><strong>O que mais gosta:</strong> ${d.gosta}</p>
-        <p><strong>Mensagem:</strong> ${d.mensagem}</p>
+        <p><strong>Nome:</strong> ${d.nome || "-"}</p>
+        <p><strong>Telefone:</strong> ${d.telefone || "-"}</p>
+        <p><strong>Relato:</strong> ${d.mensagem || "-"}</p>
+        <p><strong>O que mais gosta:</strong> ${d.gosta || "-"}</p>
         <hr>
       </div>
     `;
 
-    dadosExportacao.push({
-      Nome: d.nome,
-      Telefone: d.telefone,
-      "O que mais gosta na escola": d.gosta,
-      Mensagem: d.mensagem
+    // ✅ dados prontos para Excel
+    dadosXLSX.push({
+      Nome: d.nome || "",
+      Telefone: d.telefone || "",
+      Relato: d.mensagem || "",
+      "O que mais gosta na escola": d.gosta || ""
     });
   });
+}
+
+// 📤 EXPORTAR XLSX (AGORA FUNCIONA)
+document.getElementById("btnExportar").addEventListener("click", () => {
+  if (dadosXLSX.length === 0) {
+    alert("Nenhum dado para exportar.");
+    return;
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(dadosXLSX);
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Ouvidoria");
+
+  XLSX.writeFile(workbook, "ouvidoria.xlsx");
 });
