@@ -1,39 +1,51 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// 🔥 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
   authDomain: "ouvidoria--moveedu.firebaseapp.com",
-  projectId: "ouvidoria--moveedu",
-  storageBucket: "ouvidoria--moveedu.firebasestorage.app",
-  messagingSenderId: "928513173800",
-  appId: "1:928513173800:web:79c12bcef0919245b4481d"
+  projectId: "ouvidoria--moveedu"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const form = document.getElementById("formOuvidoria");
-const status = document.getElementById("status");
+document.getElementById("btnEnviar").addEventListener("click", async () => {
+  const nome = document.getElementById("nome").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const mensagem = document.getElementById("mensagem").value.trim();
+  const gosta = document.getElementById("gosta").value.trim();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  if (!mensagem) {
+    alert("Por favor, escreva sua manifestação.");
+    return;
+  }
 
   try {
     await addDoc(collection(db, "manifestacoes"), {
-      nome: form.nome.value || "Anônimo",
-      telefone: form.telefone.value || "Não informado",
-      mensagem: form.mensagem.value,
-      gosta: form.gosta.value || "Não informado",
+      nome,
+      telefone,
+      mensagem,
+      gosta,
       data: serverTimestamp()
     });
 
-    status.innerText = "Mensagem enviada com sucesso!";
-    form.reset();
+    alert("Mensagem enviada com sucesso!");
 
-  } catch (err) {
-    console.error(err);
-    status.innerText = "Erro ao enviar.";
+    // limpar campos
+    document.getElementById("nome").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("mensagem").value = "";
+    document.getElementById("gosta").value = "";
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao enviar. Tente novamente.");
   }
 });
