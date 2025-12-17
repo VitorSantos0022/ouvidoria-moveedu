@@ -8,32 +8,31 @@
 <body>
 
 <header>
-  <img src="logo.png" class="logo" alt="MOVEEDU">
+  <img src="logoMicrolins.png" class="logo" alt="MOVEEDU">
 </header>
 
 <div class="card">
   <h2>Ouvidoria MOVEEDU</h2>
 
-  <form id="formOuvidoria" action="javascript:void(0);">
-    <input type="text" id="nome" placeholder="Seu nome (opcional)">
-    <input type="tel" id="telefone" placeholder="Telefone / WhatsApp (opcional)">
+  <label>Coloque seu nome completo</label>
+  <input type="text" id="nome" placeholder="Nome completo (opcional)">
 
-    <label class="label">Relate aqui, queremos te ouvir:</label>
-    <textarea id="mensagem" required></textarea>
+  <label>Informe seu telefone ou WhatsApp</label>
+  <input type="text" id="telefone" placeholder="(99) 99999-9999 (opcional)">
 
-    <label class="label">O que você mais gosta na escola?</label>
-    <textarea id="gosta"></textarea>
+  <label>Relate aqui, queremos te ouvir</label>
+  <textarea id="mensagem" rows="4" placeholder="Digite sua manifestação"></textarea>
 
-    <button type="submit">Enviar</button>
-  </form>
+  <label>O que você mais gosta na escola?</label>
+  <textarea id="gosta" rows="3" placeholder="Conte para nós"></textarea>
 
-  <p id="status"></p>
+  <button id="btnEnviar">Enviar</button>
 
-  <a href="login.html">Acesso administrativo</a>
+  <a href="login.html" class="admin-link">Acesso administrativo</a>
 </div>
 
 <footer>
-  <img src="logo.png" class="logo-footer">
+  <img src="LogoFaculdade.png" class="logo-footer">
   <p>© MOVEEDU</p>
 </footer>
 
