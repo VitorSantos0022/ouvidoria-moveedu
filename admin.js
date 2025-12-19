@@ -75,10 +75,6 @@ document.getElementById("btnExportar").addEventListener("click", () => {
   XLSX.writeFile(workbook, "ouvidoria.xlsx");
 });
 
-// 🧹 LIMPAR REGISTROS
-import { deleteDoc, getDocs } from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 document.getElementById("btnLimpar").addEventListener("click", async () => {
   if (!confirm("Tem certeza que deseja apagar TODOS os registros?")) return;
 
