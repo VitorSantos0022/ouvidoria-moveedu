@@ -87,3 +87,20 @@ document.getElementById("btnExportar").addEventListener("click", () => {
 
   XLSX.writeFile(workbook, "ouvidoria.xlsx");
 });
+
+function limparTudo() {
+  if (confirm("Tem certeza que deseja apagar TODOS os registros da ouvidoria?")) {
+    db.collection("ouvidoria").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        db.collection("ouvidoria").doc(doc.id).delete();
+      });
+      alert("Todos os registros foram apagados com sucesso.");
+    });
+  }
+}
+
+function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "index.html";
+  });
+}
