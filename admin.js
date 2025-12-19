@@ -4,7 +4,6 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc,
   orderBy,
   query
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -25,7 +24,7 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  await carregarDados();
+  carregarDados();
 });
 
 async function carregarDados() {
@@ -68,20 +67,19 @@ document.getElementById("btnExportar").addEventListener("click", () => {
     return;
   }
 
-  const worksheet = XLSX.utils.json_to_sheet(dadosXLSX);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Ouvidoria");
-
-  XLSX.writeFile(workbook, "ouvidoria.xlsx");
+  const ws = XLSX.utils.json_to_sheet(dadosXLSX);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
+  XLSX.writeFile(wb, "ouvidoria.xlsx");
 });
 
+// 🧹 LIMPAR REGISTROS
 document.getElementById("btnLimpar").addEventListener("click", async () => {
   if (!confirm("Tem certeza que deseja apagar TODOS os registros?")) return;
 
   const snapshot = await getDocs(collection(db, "manifestacoes"));
-
-  for (const doc of snapshot.docs) {
-    await deleteDoc(doc.ref);
+  for (const d of snapshot.docs) {
+    await deleteDoc(d.ref);
   }
 
   alert("Registros apagados com sucesso.");
@@ -89,37 +87,6 @@ document.getElementById("btnLimpar").addEventListener("click", async () => {
 });
 
 // 🚪 SAIR
-document.getElementById("btnSair").addEventListener("click", () => {
-  auth.signOut().then(() => {
-    window.location.href = "index.html";
-  });
-});
-
-// 🔘 BOTÕES
-document.getElementById("btnExportar").addEventListener("click", () => {
-  if (dadosXLSX.length === 0) {
-    alert("Nenhum dado para exportar.");
-    return;
-  }
-
-  const ws = XLSX.utils.json_to_sheet(dadosXLSX);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
-  XLSX.writeFile(wb, "ouvidoria.xlsx");
-});
-
-document.getElementById("btnLimpar").addEventListener("click", async () => {
-  if (!confirm("Tem certeza que deseja apagar TODOS os registros?")) return;
-
-  const snapshot = await getDocs(collection(db, "manifestacoes"));
-  snapshot.forEach(async (d) => {
-    await deleteDoc(doc(db, "manifestacoes", d.id));
-  });
-
-  alert("Registros apagados com sucesso.");
-  location.reload();
-});
-
 document.getElementById("btnSair").addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "index.html";
