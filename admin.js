@@ -1,28 +1,20 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { auth, db } from "./firebase.js";
+
 import {
-  getFirestore,
   collection,
   getDocs,
+  deleteDoc,
+  doc,
   orderBy,
   query
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 import {
-  getAuth,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔥 Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyBphT72hcN0MJlCmjiNyKOwECoGuNLymrc",
-  authDomain: "ouvidoria--moveedu.firebaseapp.com",
-  projectId: "ouvidoria--moveedu"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-// 📦 array GLOBAL para exportação
+// 📦 dados para XLSX
 let dadosXLSX = [];
 
 // 🔒 proteger painel
@@ -38,7 +30,7 @@ onAuthStateChanged(auth, async (user) => {
 
 async function carregarDados() {
   const lista = document.getElementById("lista");
-  lista.innerHTML = "<p>Carregando...</p>";
+  lista.innerHTML = "Carregando...";
   dadosXLSX = [];
 
   const q = query(
@@ -47,60 +39,54 @@ async function carregarDados() {
   );
 
   const snapshot = await getDocs(q);
-
   lista.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    const d = doc.data();
+  snapshot.forEach(d => {
+    const dado = d.data();
 
     lista.innerHTML += `
       <div class="card">
-        <p><strong>Nome:</strong> ${d.nome || "-"}</p>
-        <p><strong>Telefone:</strong> ${d.telefone || "-"}</p>
-        <p><strong>Relato:</strong> ${d.mensagem || "-"}</p>
-        <p><strong>O que mais gosta:</strong> ${d.gosta || "-"}</p>
+        <p><b>Nome:</b> ${dado.nome || "-"}</p>
+        <p><b>Telefone:</b> ${dado.telefone || "-"}</p>
+        <p><b>Relato:</b> ${dado.mensagem || "-"}</p>
         <hr>
       </div>
     `;
 
-    // ✅ dados prontos para Excel
     dadosXLSX.push({
-      Nome: d.nome || "",
-      Telefone: d.telefone || "",
-      Relato: d.mensagem || "",
-      "O que mais gosta na escola": d.gosta || ""
+      Nome: dado.nome || "",
+      Telefone: dado.telefone || "",
+      Relato: dado.mensagem || ""
     });
   });
 }
 
-// 📤 EXPORTAR XLSX (AGORA FUNCIONA)
+// 🔘 BOTÕES
 document.getElementById("btnExportar").addEventListener("click", () => {
   if (dadosXLSX.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
   }
 
-  const worksheet = XLSX.utils.json_to_sheet(dadosXLSX);
-  const workbook = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Ouvidoria");
-
-  XLSX.writeFile(workbook, "ouvidoria.xlsx");
+  const ws = XLSX.utils.json_to_sheet(dadosXLSX);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ouvidoria");
+  XLSX.writeFile(wb, "ouvidoria.xlsx");
 });
 
-function limparTudo() {
-  if (confirm("Tem certeza que deseja apagar TODOS os registros da ouvidoria?")) {
-    db.collection("ouvidoria").get().then(snapshot => {
-      snapshot.forEach(doc => {
-        db.collection("ouvidoria").doc(doc.id).delete();
-      });
-      alert("Todos os registros foram apagados com sucesso.");
-    });
-  }
-}
+document.getElementById("btnLimpar").addEventListener("click", async () => {
+  if (!confirm("Tem certeza que deseja apagar TODOS os registros?")) return;
 
-function logout() {
-  auth.signOut().then(() => {
-    window.location.href = "index.html";
+  const snapshot = await getDocs(collection(db, "manifestacoes"));
+  snapshot.forEach(async (d) => {
+    await deleteDoc(doc(db, "manifestacoes", d.id));
   });
-}
+
+  alert("Registros apagados com sucesso.");
+  location.reload();
+});
+
+document.getElementById("btnSair").addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "index.html";
+});
