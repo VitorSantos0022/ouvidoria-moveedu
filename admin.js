@@ -61,6 +61,44 @@ async function carregarDados() {
   });
 }
 
+// 📤 EXPORTAR XLSX
+document.getElementById("btnExportar").addEventListener("click", () => {
+  if (dadosXLSX.length === 0) {
+    alert("Nenhum dado para exportar.");
+    return;
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(dadosXLSX);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Ouvidoria");
+
+  XLSX.writeFile(workbook, "ouvidoria.xlsx");
+});
+
+// 🧹 LIMPAR REGISTROS
+import { deleteDoc, getDocs } from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+document.getElementById("btnLimpar").addEventListener("click", async () => {
+  if (!confirm("Tem certeza que deseja apagar TODOS os registros?")) return;
+
+  const snapshot = await getDocs(collection(db, "manifestacoes"));
+
+  for (const doc of snapshot.docs) {
+    await deleteDoc(doc.ref);
+  }
+
+  alert("Registros apagados com sucesso.");
+  carregarDados();
+});
+
+// 🚪 SAIR
+document.getElementById("btnSair").addEventListener("click", () => {
+  auth.signOut().then(() => {
+    window.location.href = "index.html";
+  });
+});
+
 // 🔘 BOTÕES
 document.getElementById("btnExportar").addEventListener("click", () => {
   if (dadosXLSX.length === 0) {
